@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - AI-Powered Portfolio Optimizer for Nifty50</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@300;500;700&family=Prompt:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Prompt', sans-serif;
+            background: radial-gradient(circle at top left, #0d0221, #1f1c3c 60%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 3rem;
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 15px #1c1c3c;
+            backdrop-filter: blur(6px);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            background: linear-gradient(to right, #00f5a0, #00d9f5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logout {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            color: white;
+            text-decoration: none;
+            background: #ff0055;
+            padding: 10px 18px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .logout:hover {
+            background: #ff3366;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 4rem 6rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 200, 0.15);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.025);
+            box-shadow: 0 0 30px rgba(0, 255, 200, 0.4);
+        }
+
+        .card h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 0.6rem;
+            background: linear-gradient(to right, #00f5a0, #00d9f5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: #ccc;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #00ffe5;
+        }
+
+        /* AI Section */
+        section.ai {
+            text-align: center;
+            padding: 3rem 2rem 2rem;
+            background: linear-gradient(to right, #1a1a2e, #16213e);
+            border-top: 1px solid rgba(0, 255, 255, 0.15);
+            box-shadow: inset 0 1px 20px rgba(0, 255, 255, 0.1);
+        }
+
+        section.ai h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: #00ffe5;
+            margin-bottom: 0.5rem;
+        }
+
+        section.ai p {
+            color: #aaa;
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1rem;
+        }
+
+        section .fact-card {
+            margin-top: 2rem;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 2rem;
+            border-radius: 14px;
+            box-shadow: 0 0 15px rgba(0, 255, 200, 0.3);
+        }
+
+        section .fact-card p {
+            font-size: 1rem;
+            color: #eee;
+            max-width: 500px;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .container {
+                padding: 2rem;
+                grid-template-columns: 1fr;
+            }
+
+            section.ai h2 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">📊 AI-Powered Portfolio Optimizer for Nifty50</div>
+        <a href="{{ url_for('auth.logout') }}" class="logout">Logout</a>
+    </header>
+
+    <main class="container">
+        <div class="card" onclick="location.href='/real_time_data'">
+            <div class="card-icon">⏱️</div>
+            <h2>Real-Time Data</h2>
+            <p>Live market movements of Nifty 50 stocks updated in real-time. Stay informed, always.</p>
+        </div>
+        <div class="card" onclick="location.href='/stock_predictions'">
+            <div class="card-icon">📈</div>
+            <h2>Stock Predictions</h2>
+            <p>AI-powered future stock predictions using XGBoost and historical trends.</p>
+        </div>
+        <div class="card" onclick="location.href='/optimized_portfolio'">
+            <div class="card-icon">🧠</div>
+            <h2>Optimized Portfolio</h2>
+            <p>Smart asset allocations powered by the Markowitz Efficient Frontier model.</p>
+        </div>
+    </main>
+
+    <section class="ai">
+        <h2>AI in Action 🔍</h2>
+        <p>Real-time predictions powered by XGBoost and portfolio optimization using the Markowitz Efficient Frontier — visualized for you.</p>
+
+        <!-- Lottie Animation -->
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+        <lottie-player 
+            src="{{ url_for('static', filename='Animation - 1744293234840.json') }}"
+            background="transparent"
+            speed="1"
+            style="width: 300px; height: 300px; margin: 2rem auto;"
+            loop
+            autoplay>
+        </lottie-player>
+
+        <div class="fact-card">
+            <p>💡 <strong>Did You Know?</strong> Our AI optimizer evaluates over <span style="color: #00ffe5;">10,000+ stock combinations</span> in milliseconds to find your optimal portfolio!</p>
+        </div>
+    </section>
+</body>
+</html>

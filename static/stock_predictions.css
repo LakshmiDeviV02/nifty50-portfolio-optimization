@@ -1,0 +1,50 @@
+body {
+    background-color: #0d1117;
+    color: #e6edf3;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .prediction-header h1 {
+    font-size: 2.5rem;
+    color: #00ffcc;
+    text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc;
+  }
+  
+  .prediction-header p {
+    font-size: 1.2rem;
+    color: #999;
+  }
+  
+  .search-section input {
+    width: 300px;
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    color: white;
+  }
+  
+  .card {
+    background-color: #161b22;
+    border-radius: 12px;
+    border: none;
+  }
+  
+  .table th,
+  .table td {
+    vertical-align: middle !important;
+    font-size: 0.95rem;
+  }
+  
+  .glow-green {
+    color: #00ff7f !important;
+    text-shadow: 0 0 3px #00ff7f;
+  }
+  
+  .glow-red {
+    color: #ff4c4c !important;
+    text-shadow: 0 0 3px #ff4c4c;
+  }
+  
+  #stockChart {
+    height: 400px;
+  }
+  
