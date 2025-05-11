@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Optimized Portfolio for Nifty50</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #f1f5f9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .neon-box {
+      background: rgba(22, 27, 34, 0.85);
+      border: 1px solid #00f0ff55;
+      border-radius: 1rem;
+      box-shadow: 0 0 12px #00f0ff44;
+      backdrop-filter: blur(8px);
+    }
+
+    .neon-input, .neon-select {
+      background: #1f2937;
+      border: 1px solid #00f0ff55;
+      color: #fff;
+      box-shadow: 0 0 8px #00f0ff22;
+    }
+
+    .neon-input::placeholder {
+      color: #94a3b8;
+    }
+
+    .neon-btn {
+      background: #00f0ff;
+      color: #111827;
+      font-weight: bold;
+      box-shadow: 0 0 12px #00f0ff88;
+    }
+
+    .neon-btn:hover {
+      background: #06d3d3;
+      box-shadow: 0 0 16px #00f0ffcc;
+    }
+
+    .neon-table th {
+      background: #00f0ff;
+      color: #0f172a;
+    }
+
+    .neon-table td {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .neon-toggle {
+      accent-color: #00f0ff;
+    }
+  </style>
+</head>
+<body class="min-h-screen p-6">
+
+  <div class="max-w-5xl mx-auto neon-box p-6">
+    <h1 class="text-3xl font-extrabold text-center mb-6 text-cyan-300 drop-shadow">💹 Investment Portfolio Optimizer for Nifty50</h1>
+
+    <!-- Form -->
+    <div class="grid gap-4">
+      <div>
+        <label class="block font-semibold mb-1">💰 Investment Amount (INR):</label>
+        <input id="investment" type="number" placeholder="Enter amount" class="neon-input w-full p-2 rounded">
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1">⚖️ Risk Level:</label>
+        <select id="risk" class="neon-select w-full p-2 rounded">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1">📲 WhatsApp Number:</label>
+        <input id="whatsapp_number" type="text" placeholder="+91XXXXXXXXXX" class="neon-input w-full p-2 rounded">
+      </div>
+
+      <div class="flex items-center justify-between">
+        <label class="font-semibold">🔔 Enable WhatsApp Updates:</label>
+        <input type="checkbox" id="whatsapp_toggle" class="neon-toggle w-6 h-6">
+      </div>
+
+      <button onclick="getPortfolio()" class="neon-btn w-full p-3 rounded mt-2">🚀 Get Optimized Portfolio</button>
+    </div>
+
+    <!-- WhatsApp Sandbox Instructions -->
+    <div class="mt-6 p-4 bg-black/30 border border-cyan-500 rounded text-sm text-cyan-200">
+      <p class="mb-1 font-semibold">📢 To receive WhatsApp updates, follow these steps:</p>
+      <ol class="list-decimal list-inside text-cyan-100">
+        <li>Send <strong><code>join beauty-chamber</code></strong> to <strong>+14155238886</strong> on WhatsApp.</li>
+        <li>Ensure you entered your WhatsApp number in the format: <code>+91XXXXXXXXXX</code>.</li>
+        <li>Enable the toggle above before submitting.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div id="portfolioResults" class="max-w-5xl mx-auto mt-10 hidden">
+    <h2 class="text-2xl font-bold text-center text-cyan-200 mb-4">📊 Optimized Portfolio</h2>
+
+    <div class="overflow-x-auto neon-box p-4">
+      <table class="w-full border-collapse neon-table text-center text-white rounded-lg overflow-hidden">
+        <thead>
+          <tr>
+            <th class="p-2">Stock Symbol</th>
+            <th class="p-2">Allocation (%)</th>
+            <th class="p-2">Investment (INR)</th>
+          </tr>
+        </thead>
+        <tbody id="portfolioTable"></tbody>
+      </table>
+    </div>
+
+    <div class="mt-4 text-center">
+      <button onclick="downloadCSV()" class="neon-btn px-6 py-2 rounded">📥 Download CSV</button>
+    </div>
+
+    <div class="mt-8 neon-box p-4">
+      <h2 class="text-xl font-semibold text-center text-cyan-300 mb-2">📈 Portfolio Allocation Chart</h2>
+      <canvas id="portfolioChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    let portfolioData = [];
+
+    async function getPortfolio() {
+      let investment = document.getElementById('investment').value;
+      let risk = document.getElementById('risk').value;
+      let whatsappNumber = document.getElementById('whatsapp_number').value.trim();
+      let whatsappEnabled = document.getElementById('whatsapp_toggle').checked ? "true" : "false";
+
+      const response = await fetch(`/api/optimized_portfolio?amount=${investment}&risk_level=${risk}&whatsapp_number=${encodeURIComponent(whatsappNumber)}&whatsapp_enabled=${whatsappEnabled}`);
+      const data = await response.json();
+
+      if (data.error) {
+        alert(data.error);
+        return;
+      }
+
+      portfolioData = data.portfolio;
+      let tableBody = document.getElementById('portfolioTable');
+      tableBody.innerHTML = '';
+
+      data.portfolio.forEach(stock => {
+        let row = `<tr>
+                    <td class='p-2 border border-gray-600'>${stock.symbol}</td>
+                    <td class='p-2 border border-gray-600'>${stock.allocation_pct}%</td>
+                    <td class='p-2 border border-gray-600'>₹${stock.investment_allocation}</td>
+                  </tr>`;
+        tableBody.innerHTML += row;
+      });
+
+      let chartData = data.chart_data;
+      let ctx = document.getElementById('portfolioChart').getContext('2d');
+
+      if (window.myChart) window.myChart.destroy();
+
+      window.myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: chartData.labels,
+          datasets: [{
+            label: 'Investment Allocation',
+            data: chartData.values,
+            backgroundColor: [
+              "#00f0ff", "#ff66c4", "#7cffcb", "#ffc300", "#a27bff",
+              "#ff8787", "#66ff99", "#f72585", "#4cc9f0", "#fca311", "#8ecae6"
+            ],
+            hoverOffset: 10
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'left',
+              labels: { color: "#ffffff" }
+            },
+            title: {
+              display: true,
+              text: 'Portfolio Allocation by Investment',
+              color: "#00f0ff",
+              font: { size: 16 }
+            }
+          }
+        }
+      });
+
+      document.getElementById('portfolioResults').classList.remove('hidden');
+    }
+
+    function downloadCSV() {
+      if (!portfolioData.length) return;
+
+      let csv = "Stock Symbol,Allocation (%),Investment (INR)\n";
+      portfolioData.forEach(row => {
+        csv += `${row.symbol},${row.allocation_pct},${row.investment_allocation}\n`;
+      });
+
+      let blob = new Blob([csv], { type: "text/csv" });
+      let url = window.URL.createObjectURL(blob);
+      let a = document.createElement("a");
+      a.href = url;
+      a.download = "optimized_portfolio.csv";
+      a.click();
+      window.URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>

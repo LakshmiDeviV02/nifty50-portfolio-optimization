@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📈 Stock Predictions for Nifty50</title>
+
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Bootstrap and DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
+
+    <!-- jQuery, DataTables, and Plotly -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <!-- Custom Styling -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #ccf2ff;
+            padding: 20px 0;
+        }
+    
+        h2, h4 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffe7;
+            text-shadow: 0 0 10px rgba(0, 255, 231, 0.6);
+        }
+    
+        .container {
+            max-width: 95%;
+        }
+    
+        input, .btn {
+            font-family: 'Orbitron', sans-serif;
+        }
+    
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #00ffe7;
+            color: #aaffff;
+        }
+    
+        .form-control::placeholder {
+            color: #88e0e0;
+        }
+    
+        .btn-primary {
+            background-color: #00ffe7;
+            border: none;
+            color: #000;
+            font-weight: bold;
+            box-shadow: 0 0 10px #00ffe7;
+        }
+    
+        .btn-primary:hover {
+            background-color: #00bbaa;
+        }
+        
+    
+        .table {
+            width: 100%;
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            color: #aaffff;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 12px rgba(0, 255, 255, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+    
+        .table thead {
+            background: rgba(0, 255, 255, 0.1);
+            color: #00ffe7;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+        }
+    
+        .table th, .table td {
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            padding: 10px;
+            text-align: center;
+        }
+    
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+    
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: rgba(0, 255, 255, 0.05);
+        }
+    
+        .table tbody tr:hover {
+            background-color: rgba(0, 255, 255, 0.1);
+            box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+    
+        .text-success {
+            color: #00ff88 !important;
+        }
+    
+        .text-danger {
+            color: #ff4d6d !important;
+        }
+    
+        #stockChart {
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            box-shadow: 0 0 15px #00ffe7;
+            min-height: 400px;
+            width: 100%;
+        }
+    
+        #searchBtn {
+            box-shadow: 0 0 10px #00ffe7;
+        }
+    
+        #topStocksTable_wrapper, #predictionsTable_wrapper {
+            margin-top: 20px;
+        }
+    
+        .dataTables_wrapper .dataTables_filter input {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #aaffff;
+            border: 1px solid #00ffe7;
+            border-radius: 5px;
+        }
+    
+        .dataTables_wrapper .dataTables_length select {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #aaffff;
+            border: 1px solid #00ffe7;
+        }
+    
+        .dataTables_paginate .paginate_button {
+            color: #00ffe7 !important;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ffe7;
+            border-radius: 5px;
+            margin: 2px;
+        }
+    
+        .dataTables_paginate .paginate_button:hover {
+            background-color: #00ffe7 !important;
+            color: #000 !important;
+        }
+    </style>
+    
+    
+    
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="text-center mt-4">📈 Stock Price Predictions for Nifty50</h2>
+
+        <!-- Search Input -->
+        <div class="mb-3 text-center">
+            <input type="text" id="searchStock" class="form-control text-center w-50 mx-auto" placeholder="🔍 Enter Stock Symbol (e.g. TCS.NS)">
+            <button id="searchBtn" class="btn btn-primary mt-2">Search</button>
+        </div>
+
+        <!-- Top 5 Predicted Stocks -->
+        <h4 class="text-center">🏆 Top 5 Predicted Stocks</h4>
+        <table id="topStocksTable" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Stock Symbol</th>
+                    <th>Date</th>
+                    <th>Actual Close</th>
+                    <th>Predicted Close</th>
+                    <th>Growth</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <!-- Stock Predictions -->
+        <h4 class="text-center">📊 Stock Predictions</h4>
+        <table id="predictionsTable" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Stock Symbol</th>
+                    <th>Date</th>
+                    <th>Actual Close</th>
+                    <th>Predicted Close</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <!-- Stock Prediction Trend -->
+        <h4 class="text-center">📈 Stock Prediction Trend</h4>
+        <div id="stockChart"></div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            let table = $('#predictionsTable').DataTable();
+            let topStocksTable = $('#topStocksTable').DataTable();
+
+            fetchPredictions('');
+            fetchTopStocks();
+
+            $('#searchBtn').click(function () {
+                let stockSymbol = $('#searchStock').val().toUpperCase().trim();
+                if (stockSymbol) {
+                    fetchPredictions(stockSymbol);
+                } else {
+                    alert('Please enter a stock symbol!');
+                }
+            });
+
+            function fetchPredictions(symbol) {
+                $.getJSON(`/api/stock_predictions?symbol=${symbol}`, function (data) {
+                    table.clear();
+                    if (data.length > 0) {
+                        data.forEach(stock => {
+                            let colorClass = stock.predicted_close > stock.close ? 'text-success' : 'text-danger';
+                            table.row.add([
+                                stock.symbol,
+                                stock.date,
+                                stock.close.toFixed(2),
+                                `<span class="${colorClass}">${stock.predicted_close.toFixed(2)}</span>`
+                            ]).draw();
+                        });
+                        loadChart(data);
+                    } else {
+                        table.row.add(["No data found", "", "", ""]).draw();
+                        $("#stockChart").html("<p class='text-center text-muted'>No data available for chart.</p>");
+                    }
+                }).fail(function () {
+                    alert('Error fetching stock data. Please check API.');
+                });
+            }
+
+            function fetchTopStocks() {
+                $.getJSON("/api/top_predicted_stocks", function (data) {
+                    topStocksTable.clear();
+                    data.forEach(stock => {
+                        let colorClass = stock.growth >= 0 ? 'text-success' : 'text-danger';
+                        topStocksTable.row.add([
+                            stock.symbol,
+                            stock.date,
+                            stock.close.toFixed(2),
+                            stock.predicted_close.toFixed(2),
+                            `<span class="${colorClass}">${stock.growth.toFixed(2)}%</span>`
+                        ]).draw();
+                    });
+                }).fail(function () {
+                    alert('Error fetching top stocks.');
+                });
+            }
+
+            function loadChart(data) {
+                let actualClose = {
+                    x: data.map(d => d.date),
+                    y: data.map(d => d.close),
+                    mode: 'lines+markers',
+                    name: 'Actual Close Price',
+                    line: { color: 'cyan' }
+                };
+
+                let predictedClose = {
+                    x: data.map(d => d.date),
+                    y: data.map(d => d.predicted_close),
+                    mode: 'lines+markers',
+                    name: 'Predicted Close Price',
+                    line: { color: 'magenta' }
+                };
+
+                let layout = {
+                    title: 'Stock Price Predictions',
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    font: { color: '#fff' },
+                    xaxis: { title: 'Date' },
+                    yaxis: { title: 'Price' }
+                };
+
+                Plotly.newPlot('stockChart', [actualClose, predictedClose], layout);
+            }
+        });
+    </script>
+</body>
+</html>

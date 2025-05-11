@@ -1,0 +1,111 @@
+body {
+    background-color: #1a1a1a;
+    color: #eaeaea;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 100%;
+    padding: 20px;
+    margin: auto;
+    background-color: #222;
+    border-radius: 16px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+.title {
+    text-align: center;
+    color: #0ff0fc;
+    margin-bottom: 30px;
+    font-size: 2.4em;
+    font-weight: 600;
+    text-shadow: 0 0 10px #0ff0fc88;
+}
+
+.stock-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #262626;
+    table-layout: fixed;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.4);
+    margin-bottom: 30px;
+}
+
+.stock-table thead {
+    background: linear-gradient(to right, #00c9ff, #92fe9d);
+    color: #1a1a1a;
+}
+
+.stock-table th, .stock-table td {
+    padding: 16px 18px;
+    text-align: center;
+    border: 1px solid #444;
+    font-size: 1em;
+    line-height: 1.5;
+    font-family: 'IBM Plex Mono', monospace; /* Modern numeric font */
+}
+
+.stock-table tr {
+    height: 60px;
+    transition: background-color 0.3s;
+}
+
+.stock-table tr:hover {
+    background-color: #303030;
+}
+
+.green {
+    color: #66ffcc;
+    font-weight: 600;
+    background: linear-gradient(90deg, #1effbc, #3ee6c1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-clip: text;
+    background-clip: text;
+    background-clip: text;
+    background-clip: text;
+    background-clip: text;
+    background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.red {
+    color: #ff6b81;
+    font-weight: 600;
+    background: linear-gradient(90deg, #ff758c, #ff7eb3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.arrow {
+    margin-left: 4px;
+    font-size: 0.9em;
+    vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 12px;
+    }
+
+    .title {
+        font-size: 1.7em;
+    }
+
+    .stock-table th, .stock-table td {
+        font-size: 0.88em;
+        padding: 8px;
+    }
+
+    .arrow {
+        display: block;
+        margin-top: 3px;
+    }
+}

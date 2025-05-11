@@ -1,0 +1,177 @@
+.price-up {
+    color: green !important;
+    font-weight: bold;
+}
+
+.price-down {
+    color: red !important;
+    font-weight: bold;
+}
+
+.neutral {
+    color: black !important;
+    font-weight: normal;
+}
+
+
+/* Additional styling for stock_predictions table */
+.actual-close {
+    font-weight: bold;
+}
+
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+h2 {
+    color: #007bff;
+    text-align: center;
+}
+
+.table {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+input.form-control {
+    width: 300px;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f1f1f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 300px;
+    text-align: center;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+button, .google-btn {
+    padding: 10px 20px;
+    border: none;
+    background-color: #2b74f1;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.google-btn {
+    background-color: #db4437;
+    display: block;
+    margin: 10px auto 0;
+    text-decoration: none;
+    text-align: center;
+}
+
+
+.dashboard-body {
+    background: linear-gradient(to bottom right, #0f0c29, #302b63, #24243e);
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #111;
+    padding: 20px;
+    color: cyan;
+}
+
+.logo-dot {
+    color: #00f0ff;
+    margin-right: 10px;
+}
+
+.logout-btn {
+    background-color: hotpink;
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.dashboard-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 40px;
+    gap: 20px;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    width: 300px;
+    padding: 25px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+}
+
+.feature-card img {
+    width: 100px;
+    margin-top: 20px;
+}
+
+.feature-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
+}
+
+.fade-in {
+    animation: fadeInUp 1s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
